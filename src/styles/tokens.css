@@ -1,0 +1,47 @@
+:root {
+	--font-display: 'Bahnschrift', 'Aptos Narrow', 'Segoe UI Variable Display', sans-serif;
+	--font-body: 'Aptos', 'Segoe UI Variable Text', 'Segoe UI', sans-serif;
+	--font-mono: 'Cascadia Code', 'Consolas', monospace;
+	--font-ui: 'Microsoft YaHei UI', 'Microsoft YaHei', 'Segoe UI', sans-serif;
+	--hero-control-size: 3rem;
+	--site-max: 84rem;
+	--stage-progress: 0;
+}
+
+:root[data-theme='light'] {
+	--page-bg: #eef3f9;
+	--page-tint: rgba(15, 108, 189, 0.16);
+	--page-tint-alt: rgba(16, 124, 16, 0.1);
+	--surface-0: rgba(255, 255, 255, 0.76);
+	--surface-1: #ffffff;
+	--surface-2: #f5f8fc;
+	--surface-3: #d6e9f8;
+	--border-0: rgba(15, 108, 189, 0.18);
+	--border-1: rgba(15, 108, 189, 0.38);
+	--text-0: #1b1a19;
+	--text-1: #323130;
+	--text-2: #605e5c;
+	--accent-0: #0f6cbd;
+	--accent-1: #115ea3;
+	--shadow-0: 0 30px 80px rgba(15, 108, 189, 0.12);
+	color-scheme: light;
+}
+
+:root[data-theme='dark'] {
+	--page-bg: #0f1419;
+	--page-tint: rgba(76, 194, 255, 0.18);
+	--page-tint-alt: rgba(155, 211, 95, 0.12);
+	--surface-0: rgba(23, 31, 39, 0.8);
+	--surface-1: #171f27;
+	--surface-2: #1f2a35;
+	--surface-3: #243548;
+	--border-0: rgba(76, 194, 255, 0.18);
+	--border-1: rgba(76, 194, 255, 0.4);
+	--text-0: #f3f2f1;
+	--text-1: #e1dfdd;
+	--text-2: #c8c6c4;
+	--accent-0: #4cc2ff;
+	--accent-1: #74d4ff;
+	--shadow-0: 0 30px 80px rgba(0, 0, 0, 0.42);
+	color-scheme: dark;
+}

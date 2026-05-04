@@ -1,0 +1,181 @@
+const FILTER_ALL = 'all';
+const HERO_STATE_DOCKED = 'docked';
+
+const collectCardTags = (card: Element) => new Set((card.getAttribute('data-tags') || '').split('|').filter(Boolean));
+
+export const initHomePage = () => {
+	const root = document.documentElement;
+	const themeButton = document.querySelector<HTMLElement>('[data-theme-toggle]');
+	const themeLabel = document.querySelector<HTMLElement>('[data-theme-label]');
+	const stageShell = document.querySelector<HTMLElement>('[data-stage-shell]');
+	const filterButtons = Array.from(document.querySelectorAll<HTMLElement>('[data-tag-filter]'));
+	const tagsExpandButtons = Array.from(document.querySelectorAll<HTMLElement>('[data-tags-expand-toggle]'));
+	const cards = Array.from(document.querySelectorAll<HTMLElement>('[data-post-card]')).map((card) => ({
+		element: card,
+		tags: collectCardTags(card),
+	}));
+	const scrollButtons = Array.from(document.querySelectorAll<HTMLElement>('[data-scroll-top]'));
+	const emptyState = document.querySelector<HTMLElement>('[data-feed-empty]');
+	const feedSummary = document.querySelector<HTMLElement>('[data-feed-summary]');
+	const tagShelf = document.querySelector<HTMLElement>('[data-tag-shelf]');
+
+	let activeFilter = FILTER_ALL;
+	let tagsExpanded = root.dataset.tagsExpanded !== 'false';
+	let stageProgress = '';
+	let heroState = root.dataset.heroState ?? '';
+	let stageDistance = 1;
+	let ticking = false;
+
+	const syncThemeLabel = () => {
+		const currentTheme = root.dataset.theme === 'dark' ? '深色' : '浅色';
+		const isPressed = root.dataset.theme === 'dark';
+
+		if (themeLabel) {
+			themeLabel.textContent = currentTheme;
+		}
+
+		if (themeButton) {
+			themeButton.setAttribute('aria-label', `切换主题，当前${currentTheme}`);
+			themeButton.setAttribute('aria-pressed', String(isPressed));
+		}
+	};
+
+	const syncFilterButtons = () => {
+		filterButtons.forEach((button) => {
+			const isActive = button.getAttribute('data-tag-filter') === activeFilter;
+			button.classList.toggle('is-active', isActive);
+			button.setAttribute('aria-pressed', String(isActive));
+		});
+	};
+
+	const applyFilter = (tag: string) => {
+		if (activeFilter === tag) {
+			return;
+		}
+
+		activeFilter = tag;
+		let visibleCards = 0;
+
+		cards.forEach(({ element, tags }) => {
+			const matches = tag === FILTER_ALL || tags.has(tag);
+
+			if (element.hidden === matches) {
+				element.hidden = !matches;
+			}
+
+			if (matches) {
+				visibleCards += 1;
+			}
+		});
+
+		syncFilterButtons();
+
+		if (feedSummary) {
+			feedSummary.textContent = `Archive / ${visibleCards} Frames`;
+		}
+
+		if (emptyState) {
+			emptyState.hidden = visibleCards > 0;
+		}
+	};
+
+	const syncTagsExpanded = () => {
+		const nextValue = tagsExpanded ? 'true' : 'false';
+		const shelfVisible = tagsExpanded;
+
+		if (root.dataset.tagsExpanded !== nextValue) {
+			root.dataset.tagsExpanded = nextValue;
+		}
+
+		if (tagShelf) {
+			if (tagShelf.hidden === shelfVisible) {
+				tagShelf.hidden = !shelfVisible;
+			}
+		}
+
+		tagsExpandButtons.forEach((button) => {
+			button.setAttribute('aria-pressed', String(tagsExpanded));
+			button.setAttribute('aria-expanded', String(shelfVisible));
+		});
+	};
+
+	const measureStage = () => {
+		if (!stageShell) {
+			stageDistance = 1;
+			return;
+		}
+
+		stageDistance = Math.max(stageShell.offsetHeight - window.innerHeight, 1);
+	};
+
+	const updateStage = () => {
+		if (!stageShell) {
+			return;
+		}
+
+		const progress = Math.min(Math.max(window.scrollY / stageDistance, 0), 1);
+		const nextProgress = progress.toFixed(3);
+		const nextHeroState = progress >= 0.98 ? HERO_STATE_DOCKED : 'floating';
+
+		if (stageProgress !== nextProgress) {
+			stageProgress = nextProgress;
+			root.style.setProperty('--stage-progress', nextProgress);
+		}
+
+		if (heroState !== nextHeroState) {
+			heroState = nextHeroState;
+			root.dataset.heroState = nextHeroState;
+		}
+	};
+
+	const queueStageUpdate = () => {
+		if (ticking) {
+			return;
+		}
+
+		ticking = true;
+		window.requestAnimationFrame(() => {
+			ticking = false;
+			updateStage();
+		});
+	};
+
+	syncThemeLabel();
+	measureStage();
+	activeFilter = '';
+	applyFilter(FILTER_ALL);
+	syncTagsExpanded();
+	updateStage();
+
+	themeButton?.addEventListener('click', () => {
+		const nextTheme = root.dataset.theme === 'dark' ? 'light' : 'dark';
+		root.dataset.theme = nextTheme;
+		localStorage.setItem('evigila-theme', nextTheme);
+		syncThemeLabel();
+	});
+
+	filterButtons.forEach((button) => {
+		button.addEventListener('click', () => {
+			applyFilter(button.getAttribute('data-tag-filter') || FILTER_ALL);
+		});
+	});
+
+	tagsExpandButtons.forEach((button) => {
+		button.addEventListener('click', () => {
+			tagsExpanded = !tagsExpanded;
+			syncTagsExpanded();
+		});
+	});
+
+	scrollButtons.forEach((button) => {
+		button.addEventListener('click', () => {
+			window.scrollTo({ top: 0, behavior: 'smooth' });
+		});
+	});
+
+	window.addEventListener('scroll', queueStageUpdate, { passive: true });
+	window.addEventListener('resize', () => {
+		measureStage();
+		queueStageUpdate();
+	});
+};
