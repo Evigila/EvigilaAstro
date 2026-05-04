@@ -20,7 +20,7 @@ const tags = getSortedTagNamesByCount(posts);
 
 		<Hero />
 
-		<section class="hero-tag-shelf" id="hero-tag-shelf" data-tag-shelf hidden>
+		<section class="hero-tag-shelf" id="hero-tag-shelf" data-tag-shelf>
 			<div class="hero-tag-shelf__inner" aria-label="全部标签筛选">
 				<button
 					class="chip-button ui-button hero-shelf-tag is-active"
@@ -44,6 +44,17 @@ const tags = getSortedTagNamesByCount(posts);
 		</section>
 
 		<div class="dock-controls">
+			<button
+				class="chip-button ui-button hero-browse-toggle"
+				type="button"
+				data-tags-expand-toggle
+				aria-pressed="true"
+				aria-expanded="true"
+				aria-controls="hero-tag-shelf"
+			>
+				查看标签
+			</button>
+
 			<div class="dock-search" aria-label="停靠模式搜索占位">
 				<label class="hero-search hero-search--dock" for="dock-search-input">
 					<span class="sr-only">搜索全站内容</span>

@@ -1,3 +1,5 @@
+import { initTheme } from './theme';
+
 const FILTER_ALL = 'all';
 const HERO_STATE_DOCKED = 'docked';
 
@@ -25,20 +27,7 @@ export const initHomePage = () => {
 	let heroState = root.dataset.heroState ?? '';
 	let stageDistance = 1;
 	let ticking = false;
-
-	const syncThemeLabel = () => {
-		const currentTheme = root.dataset.theme === 'dark' ? '深色' : '浅色';
-		const isPressed = root.dataset.theme === 'dark';
-
-		if (themeLabel) {
-			themeLabel.textContent = currentTheme;
-		}
-
-		if (themeButton) {
-			themeButton.setAttribute('aria-label', `切换主题，当前${currentTheme}`);
-			themeButton.setAttribute('aria-pressed', String(isPressed));
-		}
-	};
+	let resizeTicking = false;
 
 	const syncFilterButtons = () => {
 		filterButtons.forEach((button) => {
@@ -48,8 +37,8 @@ export const initHomePage = () => {
 		});
 	};
 
-	const applyFilter = (tag: string) => {
-		if (activeFilter === tag) {
+	const applyFilter = (tag: string, force = false) => {
+		if (!force && activeFilter === tag) {
 			return;
 		}
 
@@ -80,12 +69,7 @@ export const initHomePage = () => {
 	};
 
 	const syncTagsExpanded = () => {
-		const nextValue = tagsExpanded ? 'true' : 'false';
 		const shelfVisible = tagsExpanded;
-
-		if (root.dataset.tagsExpanded !== nextValue) {
-			root.dataset.tagsExpanded = nextValue;
-		}
 
 		if (tagShelf) {
 			if (tagShelf.hidden === shelfVisible) {
@@ -140,19 +124,11 @@ export const initHomePage = () => {
 		});
 	};
 
-	syncThemeLabel();
+	initTheme(themeButton, themeLabel);
 	measureStage();
-	activeFilter = '';
-	applyFilter(FILTER_ALL);
+	applyFilter(FILTER_ALL, true);
 	syncTagsExpanded();
 	updateStage();
-
-	themeButton?.addEventListener('click', () => {
-		const nextTheme = root.dataset.theme === 'dark' ? 'light' : 'dark';
-		root.dataset.theme = nextTheme;
-		localStorage.setItem('evigila-theme', nextTheme);
-		syncThemeLabel();
-	});
 
 	filterButtons.forEach((button) => {
 		button.addEventListener('click', () => {
@@ -175,7 +151,13 @@ export const initHomePage = () => {
 
 	window.addEventListener('scroll', queueStageUpdate, { passive: true });
 	window.addEventListener('resize', () => {
-		measureStage();
-		queueStageUpdate();
-	});
+		if (!resizeTicking) {
+			resizeTicking = true;
+			window.requestAnimationFrame(() => {
+				resizeTicking = false;
+				measureStage();
+				queueStageUpdate();
+			});
+		}
+	}, { passive: true });
 };
