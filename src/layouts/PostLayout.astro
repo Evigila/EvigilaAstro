@@ -1,0 +1,42 @@
+---
+import SiteLayout from './SiteLayout.astro';
+
+interface Props {
+	title: string;
+	excerpt: string;
+	publishDate: Date;
+	readingTime: string;
+	tags: string[];
+}
+
+const { title, excerpt, publishDate, readingTime, tags } = Astro.props;
+
+const publishedLabel = publishDate.toLocaleDateString('zh-CN', {
+	year: 'numeric',
+	month: 'long',
+	day: 'numeric',
+});
+---
+
+<SiteLayout title={`${title} | Evigila`} description={excerpt}>
+	<main class="post-shell">
+		<a class="post-back" href="/">返回首页</a>
+		<article class="post-article">
+			<header class="post-hero">
+				<p class="post-kicker">Static Journal</p>
+				<h1>{title}</h1>
+				<p class="post-excerpt">{excerpt}</p>
+				<div class="post-meta">
+					<span>{publishedLabel}</span>
+					<span>{readingTime}</span>
+				</div>
+				<div class="post-tags">
+					{tags.map((tag) => <span>{tag}</span>)}
+				</div>
+			</header>
+			<div class="post-content">
+				<slot />
+			</div>
+		</article>
+	</main>
+</SiteLayout>

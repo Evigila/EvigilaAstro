@@ -1,0 +1,46 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+
+const friendLinks = [
+	{
+		name: 'Northlight Notes',
+		href: 'https://example.com/northlight',
+		description: '关注前端性能、界面系统与静态内容架构。',
+	},
+	{
+		name: 'Quiet Build',
+		href: 'https://example.com/quiet-build',
+		description: '记录设计实现、排版实验和极简交互。',
+	},
+	{
+		name: 'Archive Field',
+		href: 'https://example.com/archive-field',
+		description: '偏内容组织与数字花园方向的长期写作站点。',
+	},
+];
+---
+
+<SiteLayout title="友链 | Evigila" description="Evigila 的友链页面。">
+	<main class="post-shell">
+		<a class="post-back" href="/">返回首页</a>
+		<article class="post-article">
+			<header class="post-hero">
+				<p class="post-kicker">Friends</p>
+				<h1>友链</h1>
+				<p class="post-excerpt">
+					这里先放一组友链占位结构，后续你可以直接替换成真实站点信息。
+				</p>
+			</header>
+			<div class="post-content">
+				<ul>
+					{friendLinks.map((link) => (
+						<li>
+							<strong><a href={link.href}>{link.name}</a></strong>
+							<p>{link.description}</p>
+						</li>
+					))}
+				</ul>
+			</div>
+		</article>
+	</main>
+</SiteLayout>

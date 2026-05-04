@@ -1,17 +1,214 @@
 ---
+import { getCollection } from 'astro:content';
+import Hero from '../components/Hero.astro';
+import PostGrid from '../components/PostGrid.astro';
+import { siteConfig } from '../data/site';
+import SiteLayout from '../layouts/SiteLayout.astro';
 
+const posts = (await getCollection('blog')).sort(
+	(a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf(),
+);
+
+const tagCounts = posts.reduce((counts, post) => {
+	post.data.tags.forEach((tag) => {
+		counts.set(tag, (counts.get(tag) ?? 0) + 1);
+	});
+
+	return counts;
+}, new Map<string, number>());
+
+const tags = [...tagCounts.entries()]
+	.sort((left, right) => right[1] - left[1] || left[0].localeCompare(right[0], 'zh-CN'))
+	.map(([tag]) => tag);
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<SiteLayout title={siteConfig.title} description={siteConfig.description}>
+	<main class="home-shell" id="top">
+		<section class="landing-stage" data-stage-shell>
+			<div class="landing-stage__sticky">
+				<div class="stage-ambient" aria-hidden="true"></div>
+			</div>
+		</section>
+
+		<Hero />
+
+		<section class="hero-tag-shelf" id="hero-tag-shelf" data-tag-shelf hidden>
+			<div class="hero-tag-shelf__inner" aria-label="全部标签筛选">
+				<button
+					class="chip-button ui-button hero-shelf-tag is-active"
+					type="button"
+					data-tag-filter="all"
+					aria-pressed="true"
+				>
+					无过滤
+				</button>
+				{tags.map((tag) => (
+					<button
+						class="chip-button ui-button hero-shelf-tag"
+						type="button"
+						data-tag-filter={tag}
+						aria-pressed="false"
+					>
+						{tag}
+					</button>
+				))}
+			</div>
+		</section>
+
+		<div class="dock-controls">
+			<div class="dock-search" aria-label="停靠模式搜索占位">
+				<label class="hero-search hero-search--dock" for="dock-search-input">
+					<span class="sr-only">搜索全站内容</span>
+					<input
+						class="hero-search__input"
+						id="dock-search-input"
+						type="search"
+						name="dock-q"
+						placeholder="搜索全站内容"
+						autocomplete="off"
+					/>
+				</label>
+			</div>
+
+			<button class="floating-home ui-button ui-button--square" type="button" data-scroll-top hidden>
+				<svg class="floating-home__icon" viewBox="0 0 24 24" aria-hidden="true">
+					<path d="M5.146,6.646c-.195,.195-.195,.512,0,.707s.512,.195,.707,0L10.939,2.268c.163-.163,.356-.269,.561-.341V23.5c0,.276,.224,.5,.5,.5s.5-.224,.5-.5V1.927c.204,.072,.398,.178,.561,.341l5.086,5.086c.098,.098,.226,.146,.354,.146s.256-.049,.354-.146c.195-.195,.195-.512,0-.707L13.768,1.561c-.255-.254-.552-.439-.868-.561h5.601c.276,0,.5-.224,.5-.5s-.224-.5-.5-.5H5.5c-.276,0-.5,.224-.5,.5s.224,.5,.5,.5h5.599c-.316,.122-.612,.306-.866,.561L5.146,6.646Z" fill="currentColor"></path>
+				</svg>
+				<span class="sr-only">回到顶端</span>
+			</button>
+		</div>
+
+		<section class="home-feed" id="posts">
+			<div class="feed-toolbar">
+				<p>Archive / {posts.length} Frames</p>
+				<button class="action-button ui-button" type="button" data-scroll-top>
+					回到顶端
+				</button>
+			</div>
+			<div class="home-feed__grid">
+				<PostGrid posts={posts} />
+			</div>
+			<p class="feed-empty" hidden data-feed-empty>当前标签下没有文章，换一个标签再看。</p>
+		</section>
+	</main>
+
+	<script is:inline>
+		(() => {
+			const root = document.documentElement;
+			const themeButton = document.querySelector('[data-theme-toggle]');
+			const themeLabel = document.querySelector('[data-theme-label]');
+			const stageShell = document.querySelector('[data-stage-shell]');
+			const filterButtons = Array.from(document.querySelectorAll('[data-tag-filter]'));
+			const tagsExpandButtons = Array.from(document.querySelectorAll('[data-tags-expand-toggle]'));
+			const cards = Array.from(document.querySelectorAll('[data-post-card]'));
+			const scrollButtons = Array.from(document.querySelectorAll('[data-scroll-top]'));
+			const emptyState = document.querySelector('[data-feed-empty]');
+			const floatingHome = document.querySelector('.floating-home');
+			const tagShelf = document.querySelector('[data-tag-shelf]');
+			let tagsExpanded = root.dataset.tagsExpanded !== 'false';
+
+			const syncThemeLabel = () => {
+				const currentTheme = root.dataset.theme === 'dark' ? '深色' : '浅色';
+				const isPressed = root.dataset.theme === 'dark';
+				if (themeLabel) {
+					themeLabel.textContent = currentTheme;
+				}
+
+				if (themeButton) {
+					themeButton.setAttribute('aria-label', `切换主题，当前${currentTheme}`);
+					themeButton.setAttribute('aria-pressed', String(isPressed));
+				}
+			};
+
+			const applyFilter = (tag) => {
+				let visibleCards = 0;
+
+				cards.forEach((card) => {
+					const tagsValue = card.getAttribute('data-tags') || '';
+					const matches = tag === 'all' || tagsValue.split('|').includes(tag);
+					card.hidden = !matches;
+
+					if (matches) {
+						visibleCards += 1;
+					}
+				});
+
+				filterButtons.forEach((button) => {
+					const isActive = button.getAttribute('data-tag-filter') === tag;
+					button.classList.toggle('is-active', isActive);
+					button.setAttribute('aria-pressed', String(isActive));
+				});
+
+				if (emptyState) {
+					emptyState.hidden = visibleCards > 0;
+				}
+			};
+
+			const syncTagsExpanded = () => {
+				root.dataset.tagsExpanded = tagsExpanded ? 'true' : 'false';
+				const shelfVisible = tagsExpanded;
+
+				if (tagShelf) {
+					tagShelf.hidden = !shelfVisible;
+				}
+
+				tagsExpandButtons.forEach((button) => {
+					button.setAttribute('aria-pressed', String(tagsExpanded));
+					button.setAttribute('aria-expanded', String(shelfVisible));
+				});
+			};
+
+			const updateStage = () => {
+				if (!stageShell) {
+					return;
+				}
+
+				const distance = Math.max(stageShell.offsetHeight - window.innerHeight, 1);
+				const progress = Math.min(Math.max(window.scrollY / distance, 0), 1);
+				root.style.setProperty('--stage-progress', progress.toFixed(3));
+				root.dataset.heroState = progress >= 0.98 ? 'docked' : 'floating';
+				syncTagsExpanded();
+
+				if (floatingHome) {
+					const canShowTop =
+						root.dataset.heroState === 'docked' &&
+						window.scrollY >= Math.max(distance * 0.5, window.innerHeight * 0.3);
+					floatingHome.hidden = !canShowTop;
+				}
+			};
+
+			syncThemeLabel();
+			applyFilter('all');
+			updateStage();
+
+			themeButton?.addEventListener('click', () => {
+				const nextTheme = root.dataset.theme === 'dark' ? 'light' : 'dark';
+				root.dataset.theme = nextTheme;
+				localStorage.setItem('evigila-theme', nextTheme);
+				syncThemeLabel();
+			});
+
+			filterButtons.forEach((button) => {
+				button.addEventListener('click', () => {
+					applyFilter(button.getAttribute('data-tag-filter') || 'all');
+				});
+			});
+
+			tagsExpandButtons.forEach((button) => {
+				button.addEventListener('click', () => {
+					tagsExpanded = !tagsExpanded;
+					syncTagsExpanded();
+				});
+			});
+
+			scrollButtons.forEach((button) => {
+				button.addEventListener('click', () => {
+					window.scrollTo({ top: 0, behavior: 'smooth' });
+				});
+			});
+
+			window.addEventListener('scroll', updateStage, { passive: true });
+			window.addEventListener('resize', updateStage);
+		})();
+	</script>
+</SiteLayout>
