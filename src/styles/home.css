@@ -171,6 +171,11 @@
 
 .hero-row--search {
 	justify-content: flex-end;
+	flex-wrap: wrap;
+}
+
+.hero-row--search .hero-search {
+	flex: 1 1 16rem;
 }
 
 .hero-nav-link {
@@ -429,6 +434,10 @@
 	.hero-socials {
 		gap: 0.45rem;
 		max-width: 100%;
+	}
+
+	.hero-row--search .hero-search {
+		flex-basis: 100%;
 	}
 
 	.hero-row--nav {

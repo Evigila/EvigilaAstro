@@ -60,7 +60,7 @@ export const initHomePage = () => {
 		syncFilterButtons();
 
 		if (feedSummary) {
-			feedSummary.textContent = `Archive / ${visibleCards} Frames`;
+			feedSummary.textContent = `Archive / ${visibleCards} Posts`;
 		}
 
 		if (emptyState) {

@@ -18,7 +18,7 @@ Astro.props;
 			/>
 		</div>
 		<div class="hero-copy">
-			<p class="hero-kicker">Astro Static Journal</p>
+			<p class="hero-kicker">Static Journal</p>
 			<h1>{siteConfig.name}</h1>
 			<p class="hero-bio">{siteConfig.author.bio}</p>
 			<p class="hero-signature">{siteConfig.author.signature}</p>
@@ -59,16 +59,6 @@ Astro.props;
 				{siteConfig.navigation.map((item) => (
 					<a class="chip-link ui-button hero-nav-link" href={item.href}>{item.label}</a>
 				))}
-				<button
-					class="chip-button ui-button hero-browse-toggle"
-					type="button"
-					data-tags-expand-toggle
-					aria-pressed="true"
-					aria-expanded="true"
-					aria-controls="hero-tag-shelf"
-				>
-					查看标签
-				</button>
 			</nav>
 			<div class="hero-row hero-row--search" aria-label="站内搜索占位">
 				<label class="hero-search" for="hero-search-input">
@@ -82,6 +72,16 @@ Astro.props;
 						autocomplete="off"
 					/>
 				</label>
+				<button
+					class="chip-button ui-button hero-browse-toggle"
+					type="button"
+					data-tags-expand-toggle
+					aria-pressed="true"
+					aria-expanded="true"
+					aria-controls="hero-tag-shelf"
+				>
+					标签
+				</button>
 			</div>
 		</div>
 	</div>
