@@ -16,11 +16,23 @@
 }
 
 .hero-kicker,
+.post-kicker,
+.feed-toolbar,
+.post-meta,
+.post-card__topline,
+.post-panel__kicker,
+.post-footer__kicker,
+.post-footer__label {
+	font-family: var(--font-mono);
+	font-size: 0.78rem;
+	text-transform: uppercase;
+	letter-spacing: 0.18em;
+	color: var(--text-2);
+}
+
+.hero-kicker,
 .post-kicker {
 	margin: 0 0 0.75rem;
-	font-size: 0.78rem;
-	color: var(--text-2);
-	letter-spacing: 0.18em;
 }
 
 .hero-copy h1,

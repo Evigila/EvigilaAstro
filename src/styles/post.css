@@ -63,11 +63,6 @@
 .post-footer__kicker,
 .post-footer__label {
 	margin: 0;
-	font-family: var(--font-mono);
-	font-size: 0.72rem;
-	text-transform: uppercase;
-	letter-spacing: 0.12em;
-	color: var(--text-2);
 }
 
 .post-panel__title {
@@ -199,9 +194,6 @@
 	display: flex;
 	flex-wrap: wrap;
 	gap: 1rem;
-	font-size: 0.78rem;
-	color: var(--text-2);
-	letter-spacing: 0.16em;
 }
 
 .post-content,
@@ -307,6 +299,10 @@
 }
 
 .post-outline__progress {
+	font-family: var(--font-mono);
+	font-size: 0.72rem;
+	text-transform: uppercase;
+	letter-spacing: 0.12em;
 	color: var(--accent-0);
 	white-space: nowrap;
 }
