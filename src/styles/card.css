@@ -108,6 +108,12 @@
 	text-align: right;
 }
 
+.post-card__tags span {
+	padding: 0.45rem 0.72rem;
+	font-size: 0.8rem;
+	letter-spacing: 0.08em;
+}
+
 .post-card__link:hover,
 .post-card__link:focus-visible {
 	transform: translateY(-4px) scale(1.015);

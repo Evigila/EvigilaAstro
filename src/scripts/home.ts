@@ -22,7 +22,7 @@ export const initHomePage = () => {
 	const tagShelf = document.querySelector<HTMLElement>('[data-tag-shelf]');
 
 	let activeFilter = FILTER_ALL;
-	let tagsExpanded = root.dataset.tagsExpanded !== 'false';
+	let tagsExpanded = root.dataset.tagsExpanded === 'true';
 	let stageProgress = '';
 	let heroState = root.dataset.heroState ?? '';
 	let stageDistance = 1;
@@ -70,6 +70,7 @@ export const initHomePage = () => {
 
 	const syncTagsExpanded = () => {
 		const shelfVisible = tagsExpanded;
+		root.dataset.tagsExpanded = String(tagsExpanded);
 
 		if (tagShelf) {
 			if (tagShelf.hidden === shelfVisible) {

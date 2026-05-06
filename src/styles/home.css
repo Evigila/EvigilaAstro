@@ -91,6 +91,7 @@
 	padding: 0.35rem;
 	border: 1px solid var(--border-1);
 	background: linear-gradient(135deg, var(--surface-3), transparent 70%), var(--surface-2);
+	box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
 }
 
 .hero-avatar img {
@@ -175,7 +176,8 @@
 }
 
 .hero-row--search .hero-search {
-	flex: 1 1 16rem;
+	flex: 0 1 18rem;
+	max-width: 18rem;
 }
 
 .hero-nav-link {
@@ -186,6 +188,68 @@
 .hero-browse-toggle {
 	white-space: nowrap;
 	flex: none;
+}
+
+.home-hero .hero-row .action-button,
+.home-hero .hero-row .chip-button,
+.home-hero .hero-row .chip-link {
+	box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+}
+
+.home-shell [data-tag-filter],
+.home-shell [data-tags-expand-toggle],
+.home-shell [data-theme-toggle] {
+	position: relative;
+	background: var(--surface-1);
+	color: var(--text-0);
+	box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+}
+
+.home-shell [data-tag-filter]::after,
+.home-shell [data-tags-expand-toggle]::after,
+.home-shell [data-theme-toggle]::after {
+	content: '';
+	position: absolute;
+	left: 0.65rem;
+	right: 0.65rem;
+	bottom: 0.34rem;
+	height: 0.18rem;
+	background: color-mix(in srgb, var(--text-2) 55%, transparent);
+	transition:
+		background 180ms ease,
+		transform 180ms ease,
+		opacity 180ms ease;
+	transform: scaleX(0.88);
+	transform-origin: center;
+	opacity: 0.95;
+	pointer-events: none;
+}
+
+.home-shell [data-tag-filter].is-active,
+.home-shell [data-tag-filter][aria-pressed='true'],
+.home-shell [data-tags-expand-toggle][aria-pressed='true'],
+.home-shell [data-theme-toggle][aria-pressed='true'] {
+	background: var(--surface-1);
+	border-color: var(--border-1);
+	color: var(--text-0);
+}
+
+.home-shell [data-tag-filter].is-active::after,
+.home-shell [data-tag-filter][aria-pressed='true']::after,
+.home-shell [data-tags-expand-toggle][aria-pressed='true']::after,
+.home-shell [data-theme-toggle][aria-pressed='true']::after {
+	background: var(--accent-0);
+	transform: scaleX(1);
+}
+
+:root[data-theme='dark'] .hero-avatar,
+:root[data-theme='dark'] .home-hero .hero-row .action-button,
+:root[data-theme='dark'] .home-hero .hero-row .chip-button,
+:root[data-theme='dark'] .home-hero .hero-row .chip-link,
+:root[data-theme='dark'] .home-shell [data-tag-filter],
+:root[data-theme='dark'] .home-shell [data-tags-expand-toggle],
+:root[data-theme='dark'] .home-shell [data-theme-toggle] {
+	box-shadow: 0 18px 36px rgba(0, 0, 0, 0.32);
 }
 
 :root[data-hero-state='docked'] .home-hero__panel {
@@ -435,6 +499,7 @@
 
 	.hero-row--search .hero-search {
 		flex-basis: 100%;
+		max-width: none;
 	}
 
 	.hero-row--nav {
