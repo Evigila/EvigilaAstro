@@ -21,7 +21,6 @@ const { title, excerpt, publishDate, readingTime, tags, headings } = Astro.props
 const postNavigation = siteConfig.navigation.map((item) => ({
 	...item,
 	label: item.href === '/' ? '主页' : item.label,
-	isCurrent: item.href === '/#posts',
 }));
 const postFooterLinks = siteConfig.socials.map((item) => ({
 	...item,
@@ -65,11 +64,7 @@ const publishedLabel = publishDate.toLocaleDateString('zh-CN', {
 						<p class="post-panel__title">导航</p>
 						<div class="post-nav-card__list">
 							{postNavigation.map((item) => (
-								<a
-									class:list={['post-nav-card__link', 'chip-link', 'ui-button']}
-									href={item.href}
-									aria-current={item.isCurrent ? 'page' : undefined}
-								>
+								<a class="post-nav-card__link" href={item.href}>
 									{item.label}
 								</a>
 							))}

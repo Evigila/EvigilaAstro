@@ -110,12 +110,6 @@
 	flex: none;
 }
 
-.hero-socials .hero-icon-button {
-	width: var(--hero-control-size);
-	min-width: var(--hero-control-size);
-	min-height: var(--hero-control-size);
-}
-
 .hero-socials .hero-icon {
 	width: 1.65rem;
 	height: 1.65rem;
@@ -200,17 +194,7 @@
 	font-family: var(--font-ui);
 }
 
-.post-card__tags span {
-	flex: none;
-	padding: 0.35rem 0.55rem;
-	border: 1px solid var(--border-0);
-	background: rgba(255, 255, 255, 0.22);
-	font-family: var(--font-ui);
-	font-size: 0.7rem;
-	text-transform: uppercase;
-	letter-spacing: 0.06em;
-}
-
+.post-card__tags span,
 .post-tags span {
 	flex: none;
 	padding: 0.35rem 0.55rem;
@@ -222,10 +206,7 @@
 	letter-spacing: 0.06em;
 }
 
-:root[data-theme='dark'] .post-card__tags span {
-	background: rgba(0, 0, 0, 0.18);
-}
-
+:root[data-theme='dark'] .post-card__tags span,
 :root[data-theme='dark'] .post-tags span {
 	background: rgba(0, 0, 0, 0.18);
 }

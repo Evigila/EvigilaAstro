@@ -2,7 +2,7 @@
 	--font-display: 'Bahnschrift', 'Aptos Narrow', 'Segoe UI Variable Display', sans-serif;
 	--font-body: 'Microsoft YaHei UI', 'Microsoft YaHei', 'Segoe UI', sans-serif;
 	--font-mono: 'Cascadia Code', 'Consolas', monospace;
-	--font-ui: 'Microsoft YaHei UI', 'Microsoft YaHei', 'Segoe UI', sans-serif;
+	--font-ui: var(--font-body);
 	--hero-control-size: 3rem;
 	--site-max: 84rem;
 	--stage-progress: 0;

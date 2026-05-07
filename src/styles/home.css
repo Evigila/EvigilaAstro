@@ -208,6 +208,25 @@
 	box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
 }
 
+.home-shell [data-tag-filter] {
+	position: relative;
+	isolation: isolate;
+	overflow: hidden;
+}
+
+.home-shell [data-tag-filter]::before {
+	content: '';
+	position: absolute;
+	inset: 0;
+	z-index: -1;
+	opacity: 0;
+	background: color-mix(in srgb, var(--accent-0) 14%, transparent);
+	backdrop-filter: blur(18px);
+	-webkit-backdrop-filter: blur(18px);
+	transition: opacity 180ms ease, background 180ms ease;
+	pointer-events: none;
+}
+
 .home-shell [data-tags-expand-toggle],
 .home-shell [data-theme-toggle] {
 	position: relative;
@@ -247,9 +266,14 @@
 
 .home-shell [data-tag-filter].is-active,
 .home-shell [data-tag-filter][aria-checked='true'] {
-	background: color-mix(in srgb, var(--accent-0) 14%, transparent);
+	background: transparent;
 	border-color: color-mix(in srgb, var(--accent-0) 35%, var(--border-0));
 	color: var(--text-0);
+}
+
+.home-shell [data-tag-filter].is-active::before,
+.home-shell [data-tag-filter][aria-checked='true']::before {
+	opacity: 1;
 }
 
 :root[data-theme='dark'] .hero-avatar,
