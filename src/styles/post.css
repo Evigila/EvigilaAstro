@@ -199,14 +199,37 @@
 }
 
 
-.post-action-panel > .post-action-button {
+.post-action-panel > .post-action-button,
+.post-font-wrap {
 	flex: 0 0 calc((100% - (var(--post-action-gap) * 3)) / 4);
 	width: calc((100% - (var(--post-action-gap) * 3)) / 4);
 	max-width: calc((100% - (var(--post-action-gap) * 3)) / 4);
 	min-width: 0;
+}
+
+.post-action-panel > .post-action-button {
 	padding-inline: 0;
 	gap: 0;
 	font-size: 0;
+}
+
+.post-font-wrap {
+	position: relative;
+}
+
+.post-font-wrap > .post-action-button {
+	width: 100%;
+	height: 100%;
+	padding-inline: 0;
+	gap: 0;
+	font-size: 0;
+}
+
+.post-font-wrap .hero-font-popup {
+	top: auto;
+	bottom: calc(100% + 0.5rem);
+	right: auto;
+	left: 0;
 }
 
 .post-action-icon {
@@ -509,6 +532,7 @@
 .post-footer__kicker,
 .post-footer__label {
 	color: rgba(239, 244, 251, 0.62);
+	font-family: var(--font-body);
 }
 
 .post-footer__title {
@@ -621,7 +645,8 @@
 		flex-wrap: wrap;
 	}
 
-	.post-action-panel > .post-action-button {
+	.post-action-panel > .post-action-button,
+	.post-font-wrap {
 		flex: 0 0 calc((100% - var(--post-action-gap)) / 2);
 		width: calc((100% - var(--post-action-gap)) / 2);
 		max-width: calc((100% - var(--post-action-gap)) / 2);
@@ -646,7 +671,8 @@
 		width: min(5.5rem, 28vw);
 	}
 
-	.post-action-panel > .post-action-button {
+	.post-action-panel > .post-action-button,
+	.post-font-wrap {
 		flex: 0 0 100%;
 		width: 100%;
 		max-width: 100%;

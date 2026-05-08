@@ -165,6 +165,12 @@
 	gap: 0.6rem;
 }
 
+[data-font-toggle] .hero-icon,
+[data-share] .hero-icon {
+	width: 1.2rem;
+	height: 1.2rem;
+}
+
 .hero-socials {
 	justify-content: flex-end;
 }
@@ -597,5 +603,102 @@
 	.home-hero__panel {
 		padding: 0.9rem;
 	}
+}
+
+/* ── Font size popup ── */
+
+.hero-font-wrap {
+	position: relative;
+}
+
+.hero-font-popup {
+	position: absolute;
+	top: calc(100% + 0.5rem);
+	right: 0;
+	z-index: 30;
+	width: 15rem;
+	padding: 1rem;
+	border: 1px solid var(--border-0);
+	background: var(--surface-0);
+	backdrop-filter: blur(24px);
+	box-shadow: var(--shadow-0);
+	font-family: var(--font-body);
+}
+
+.hero-font-popup__label {
+	margin: 0 0 0.75rem;
+	font-family: var(--font-body);
+	font-size: 0.8rem;
+	color: var(--text-2);
+}
+
+.hero-font-popup__track {
+	display: flex;
+	align-items: center;
+	gap: 0.6rem;
+}
+
+.hero-font-popup__min,
+.hero-font-popup__max {
+	flex: none;
+	font-size: 0.8rem;
+	color: var(--text-2);
+}
+
+.hero-font-popup__slider {
+	flex: 1;
+	-webkit-appearance: none;
+	appearance: none;
+	height: 2px;
+	background: var(--border-0);
+	outline: none;
+	cursor: pointer;
+}
+
+.hero-font-popup__slider::-webkit-slider-thumb {
+	-webkit-appearance: none;
+	appearance: none;
+	width: 1rem;
+	height: 1rem;
+	background: var(--accent-0);
+	border: none;
+	border-radius: 50%;
+	cursor: pointer;
+}
+
+.hero-font-popup__slider::-moz-range-thumb {
+	width: 1rem;
+	height: 1rem;
+	background: var(--accent-0);
+	border: none;
+	border-radius: 50%;
+	cursor: pointer;
+}
+
+/* ── Share toast ── */
+
+.hero-share-toast {
+	position: fixed;
+	left: 50%;
+	bottom: 2.5rem;
+	transform: translateX(-50%) translateY(0.75rem);
+	z-index: 200;
+	padding: 0.65rem 1.25rem;
+	border: 1px solid var(--border-0);
+	background: var(--surface-0);
+	backdrop-filter: blur(24px);
+	box-shadow: var(--shadow-0);
+	font-family: var(--font-ui);
+	font-size: 0.9rem;
+	color: var(--text-0);
+	white-space: nowrap;
+	opacity: 0;
+	pointer-events: none;
+	transition: opacity 220ms ease, transform 220ms ease;
+}
+
+.hero-share-toast.is-visible {
+	opacity: 1;
+	transform: translateX(-50%) translateY(0);
 }
 

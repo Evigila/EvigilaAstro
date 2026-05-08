@@ -117,6 +117,107 @@ export const initPostPage = () => {
 	initTheme(themeButton, themeLabel);
 	update();
 
+	// ── Font size ──────────────────────────────────────────────────────────────
+	const FONT_SIZE_KEY = 'evigila-font-size';
+	const fontSizeValues = ['small', 'normal', 'large'] as const;
+	type FontSizeValue = (typeof fontSizeValues)[number];
+
+	const fontToggleBtn = document.querySelector<HTMLElement>('[data-font-toggle]');
+	const fontPopup = document.querySelector<HTMLElement>('[data-font-popup]');
+	const fontSlider = document.querySelector<HTMLInputElement>('[data-font-slider]');
+
+	let currentFontSize: FontSizeValue = (localStorage.getItem(FONT_SIZE_KEY) as FontSizeValue | null) ?? 'normal';
+
+	const applyFontSize = (size: FontSizeValue) => {
+		currentFontSize = size;
+		if (size === 'normal') {
+			delete root.dataset.fontSize;
+		} else {
+			root.dataset.fontSize = size;
+		}
+		localStorage.setItem(FONT_SIZE_KEY, size);
+		if (fontSlider) {
+			fontSlider.value = String(fontSizeValues.indexOf(size));
+		}
+	};
+
+	applyFontSize(currentFontSize);
+
+	if (fontToggleBtn && fontPopup) {
+		fontToggleBtn.addEventListener('click', (e) => {
+			e.stopPropagation();
+			const willOpen = fontPopup.hidden;
+			fontPopup.hidden = !willOpen;
+			fontToggleBtn.setAttribute('aria-expanded', String(willOpen));
+		});
+
+		document.addEventListener('click', (e) => {
+			if (!fontPopup.hidden) {
+				const wrap = fontToggleBtn.closest('.post-font-wrap');
+				if (!wrap?.contains(e.target as Node)) {
+					fontPopup.hidden = true;
+					fontToggleBtn.setAttribute('aria-expanded', 'false');
+				}
+			}
+		});
+
+		document.addEventListener('keydown', (e) => {
+			if (e.key === 'Escape' && !fontPopup.hidden) {
+				fontPopup.hidden = true;
+				fontToggleBtn.setAttribute('aria-expanded', 'false');
+				fontToggleBtn.focus();
+			}
+		});
+	}
+
+	if (fontSlider) {
+		fontSlider.addEventListener('input', () => {
+			applyFontSize(fontSizeValues[parseInt(fontSlider.value, 10)]);
+		});
+	}
+
+	// ── Share ──────────────────────────────────────────────────────────────────
+	const SITE_URL = 'https://your-domain.com'; // TODO: replace with actual domain
+	let shareToastTimeout: ReturnType<typeof setTimeout> | null = null;
+
+	const showShareToast = (message: string) => {
+		let toast = document.querySelector<HTMLElement>('.hero-share-toast');
+		if (!toast) {
+			toast = document.createElement('div');
+			toast.className = 'hero-share-toast';
+			toast.setAttribute('role', 'status');
+			toast.setAttribute('aria-live', 'polite');
+			document.body.appendChild(toast);
+		}
+		toast.textContent = message;
+		toast.classList.add('is-visible');
+		if (shareToastTimeout !== null) {
+			clearTimeout(shareToastTimeout);
+		}
+		shareToastTimeout = setTimeout(() => {
+			toast!.classList.remove('is-visible');
+		}, 3000);
+	};
+
+	const shareBtn = document.querySelector<HTMLElement>('[data-share]');
+	if (shareBtn) {
+		shareBtn.addEventListener('click', async () => {
+			const url = SITE_URL + window.location.pathname;
+			try {
+				await navigator.clipboard.writeText(url);
+			} catch {
+				const textarea = document.createElement('textarea');
+				textarea.value = url;
+				textarea.style.cssText = 'position:fixed;opacity:0;pointer-events:none;';
+				document.body.appendChild(textarea);
+				textarea.select();
+				document.execCommand('copy');
+				document.body.removeChild(textarea);
+			}
+			showShareToast('已复制浏览器地址，感谢分享喵~');
+		});
+	}
+
 	scrollButtons.forEach((button) => {
 		button.addEventListener('click', () => {
 			window.scrollTo({ top: 0, behavior: 'smooth' });

@@ -85,22 +85,43 @@ const publishedLabel = publishDate.toLocaleDateString('zh-CN', {
 							<span class="sr-only">切换主题，当前</span>
 							<strong class="sr-only" data-theme-label>浅色</strong>
 						</button>
+						<div class="post-font-wrap">
+							<button
+								class="post-action-button action-button ui-button"
+								type="button"
+								data-font-toggle
+								aria-expanded="false"
+								aria-haspopup="true"
+								aria-label="调整字体大小"
+							>
+								<svg class="post-action-icon" viewBox="0 0 24 24" aria-hidden="true">
+									<path d="M23.931,22.634L16.144,2.814c-1.288-3.718-7-3.717-8.288,0L.069,22.634c-.202,.514,.051,1.095,.565,1.296,.515,.203,1.095-.051,1.296-.565l2.501-6.366h15.137l2.501,6.366c.202,.519,.795,.766,1.296,.565,.514-.202,.767-.782,.565-1.296ZM5.217,15L9.717,3.545c.924-2.104,3.641-2.104,4.565,0l4.5,11.455H5.217Z" fill="currentColor"></path>
+								</svg>
+								<span class="sr-only">字体大小</span>
+							</button>
+							<div class="hero-font-popup" data-font-popup hidden>
+								<p class="hero-font-popup__label">字号</p>
+								<div class="hero-font-popup__track">
+									<span class="hero-font-popup__min">小</span>
+									<input
+										class="hero-font-popup__slider"
+										type="range"
+										min="0"
+										max="2"
+										step="1"
+										value="1"
+										data-font-slider
+										aria-label="字体大小调节"
+									/>
+									<span class="hero-font-popup__max">大</span>
+								</div>
+							</div>
+						</div>
 						<button
 							class="post-dock__button post-action-button action-button ui-button"
 							type="button"
-							title="点赞功能待接入"
-							aria-label="点赞，功能待接入"
-						>
-							<svg class="post-action-icon" viewBox="0 0 24 24" aria-hidden="true">
-								<path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Zm-3.585,18.4a2.973,2.973,0,0,1-3.83,0C4.947,16.006,2,11.87,2,8.967a4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,11,8.967a1,1,0,0,0,2,0,4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,22,8.967C22,11.87,19.053,16.006,13.915,20.313Z" fill="currentColor"></path>
-							</svg>
-							<span class="sr-only">点赞</span>
-						</button>
-						<button
-							class="post-dock__button post-action-button action-button ui-button"
-							type="button"
-							title="分享功能待接入"
-							aria-label="分享，功能待接入"
+							data-share
+							aria-label="分享当前页面"
 						>
 							<svg class="post-action-icon" viewBox="0 0 24 24" aria-hidden="true">
 								<path d="M19.333,14.667a4.66,4.66,0,0,0-3.839,2.024L8.985,13.752a4.574,4.574,0,0,0,.005-3.488l6.5-2.954a4.66,4.66,0,1,0-.827-2.643,4.633,4.633,0,0,0,.08.786L7.833,8.593a4.668,4.668,0,1,0-.015,6.827l6.928,3.128a4.736,4.736,0,0,0-.079.785,4.667,4.667,0,1,0,4.666-4.666ZM19.333,2a2.667,2.667,0,1,1-2.666,2.667A2.669,2.669,0,0,1,19.333,2ZM4.667,14.667A2.667,2.667,0,1,1,7.333,12,2.67,2.67,0,0,1,4.667,14.667ZM19.333,22A2.667,2.667,0,1,1,22,19.333,2.669,2.669,0,0,1,19.333,22Z" fill="currentColor"></path>
@@ -117,7 +138,6 @@ const publishedLabel = publishDate.toLocaleDateString('zh-CN', {
 							</svg>
 							<span class="sr-only">评论</span>
 						</a>
-						</button>
 					</div>
 				</div>
 			</aside>
