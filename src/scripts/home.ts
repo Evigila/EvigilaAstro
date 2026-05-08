@@ -247,7 +247,7 @@ export const initHomePage = () => {
 	}
 
 	// ── Share ──────────────────────────────────────────────────────────────────
-	const SITE_URL = 'https://your-domain.com'; // TODO: replace with actual domain
+	const SITE_URL = 'https://evigila.net';
 	let shareToastTimeout: ReturnType<typeof setTimeout> | null = null;
 
 	const showShareToast = (message: string) => {
