@@ -76,9 +76,9 @@
 	aspect-ratio: 1;
 }
 
-.hero-row .action-button,
-.hero-row .chip-button,
-.hero-row .chip-link {
+.hero-ctrl-row .action-button,
+.hero-ctrl-row .chip-button,
+.hero-ctrl-row .chip-link {
 	font-family: var(--font-ui);
 	font-size: 0.96rem;
 	font-weight: 600;
@@ -102,11 +102,6 @@
 	width: 1.5rem;
 	height: 1.5rem;
 	flex: none;
-}
-
-.hero-socials .hero-icon {
-	width: 1.65rem;
-	height: 1.65rem;
 }
 
 .hero-search {
@@ -169,12 +164,12 @@
 	color: var(--text-0);
 }
 
-.hero-row .action-button:hover,
-.hero-row .chip-button:hover,
-.hero-row .chip-link:hover,
-.hero-row .action-button:focus-visible,
-.hero-row .chip-button:focus-visible,
-.hero-row .chip-link:focus-visible {
+.hero-ctrl-row .action-button:hover,
+.hero-ctrl-row .chip-button:hover,
+.hero-ctrl-row .chip-link:hover,
+.hero-ctrl-row .action-button:focus-visible,
+.hero-ctrl-row .chip-button:focus-visible,
+.hero-ctrl-row .chip-link:focus-visible {
 	z-index: 2;
 }
 

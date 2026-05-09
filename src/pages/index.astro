@@ -5,6 +5,7 @@ import Hero from '../components/Hero.astro';
 import PostGrid from '../components/PostGrid.astro';
 import { siteConfig } from '../data/site';
 import SiteLayout from '../layouts/SiteLayout.astro';
+import { ICONS } from '../data/icons';
 
 const posts = sortPostsByUpdatedAt(await getCollection('blog'));
 const tags = getSortedTagNamesByCount(posts);
@@ -49,14 +50,18 @@ const tags = getSortedTagNamesByCount(posts);
 
 		<div class="dock-controls">
 			<button
-				class="chip-button ui-button hero-browse-toggle"
+				class="action-button ui-button ui-button--square hero-browse-toggle"
 				type="button"
 				data-tags-expand-toggle
 				aria-pressed="false"
 				aria-expanded="false"
 				aria-controls="hero-tag-shelf"
+				aria-label="标签筛选"
 			>
-				标签
+				<svg class="hero-icon" viewBox="0 0 24 24" aria-hidden="true">
+					<path d={ICONS.tags} fill="currentColor"/>
+				</svg>
+				<span class="sr-only">标签筛选</span>
 			</button>
 
 			<div class="dock-search" aria-label="停靠模式搜索占位">
@@ -75,7 +80,7 @@ const tags = getSortedTagNamesByCount(posts);
 
 			<button class="floating-home ui-button ui-button--square" type="button" data-scroll-top>
 				<svg class="floating-home__icon" viewBox="0 0 24 24" aria-hidden="true">
-					<path d="M5.146,6.646c-.195,.195-.195,.512,0,.707s.512,.195,.707,0L10.939,2.268c.163-.163,.356-.269,.561-.341V23.5c0,.276,.224,.5,.5,.5s.5-.224,.5-.5V1.927c.204,.072,.398,.178,.561,.341l5.086,5.086c.098,.098,.226,.146,.354,.146s.256-.049,.354-.146c.195-.195,.195-.512,0-.707L13.768,1.561c-.255-.254-.552-.439-.868-.561h5.601c.276,0,.5-.224,.5-.5s-.224-.5-.5-.5H5.5c-.276,0-.5,.224-.5,.5s.224,.5,.5,.5h5.599c-.316,.122-.612,.306-.866,.561L5.146,6.646Z" fill="currentColor"></path>
+					<path d={ICONS.arrowUp} fill="currentColor"/>
 				</svg>
 				<span class="sr-only">回到顶端</span>
 			</button>
