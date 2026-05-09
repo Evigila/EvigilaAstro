@@ -189,27 +189,9 @@ export const initHomePage = () => {
 	});
 
 	// ── Share ──────────────────────────────────────────────────────────────────
-	const SITE_URL = 'https://evigila.net';
-	let shareToastTimeout: ReturnType<typeof setTimeout> | null = null;
-
-	const showShareToast = (message: string) => {
-		let toast = document.querySelector<HTMLElement>('.hero-share-toast');
-		if (!toast) {
-			toast = document.createElement('div');
-			toast.className = 'hero-share-toast';
-			toast.setAttribute('role', 'status');
-			toast.setAttribute('aria-live', 'polite');
-			document.body.appendChild(toast);
-		}
-		toast.textContent = message;
-		toast.classList.add('is-visible');
-		if (shareToastTimeout !== null) {
-			clearTimeout(shareToastTimeout);
-		}
-		shareToastTimeout = setTimeout(() => {
-			toast!.classList.remove('is-visible');
-		}, 3000);
-	};
+	const SITE_URL = 'https://blog.evigila.net';
+	const _showToast = (msg: string) =>
+		(window as unknown as { showToast?: (m: string) => void }).showToast?.(msg);
 
 	const shareBtn = document.querySelector<HTMLElement>('[data-share]');
 	if (shareBtn) {
@@ -226,7 +208,7 @@ export const initHomePage = () => {
 				document.execCommand('copy');
 				document.body.removeChild(textarea);
 			}
-			showShareToast('感谢分享，已复制博客地址到剪贴板喵~');
+			_showToast('感谢分享，已复制到剪贴板喵~');
 		});
 	}
 

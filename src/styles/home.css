@@ -675,30 +675,3 @@
 	cursor: pointer;
 }
 
-/* ── Share toast ── */
-
-.hero-share-toast {
-	position: fixed;
-	left: 50%;
-	bottom: 2.5rem;
-	transform: translateX(-50%) translateY(0.75rem);
-	z-index: 200;
-	padding: 0.65rem 1.25rem;
-	border: 1px solid var(--border-0);
-	background: var(--surface-0);
-	backdrop-filter: blur(24px);
-	box-shadow: var(--shadow-0);
-	font-family: var(--font-ui);
-	font-size: 0.9rem;
-	color: var(--text-0);
-	white-space: nowrap;
-	opacity: 0;
-	pointer-events: none;
-	transition: opacity 220ms ease, transform 220ms ease;
-}
-
-.hero-share-toast.is-visible {
-	opacity: 1;
-	transform: translateX(-50%) translateY(0);
-}
-

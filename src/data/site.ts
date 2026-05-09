@@ -13,7 +13,7 @@ export const siteConfig = {
 		{ label: '首页', href: '/' },
 		{ label: '文章', href: '/#posts' },
 		{ label: '友链', href: '/friend' },
-		{ label: '联系', href: '/contact' },
+		{ label: '主站', href: '#' },
 	],
 	socials: [
 		{ label: 'GitHub', href: 'https://github.com/Evigila', icon: 'github' },

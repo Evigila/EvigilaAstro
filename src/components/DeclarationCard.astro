@@ -6,7 +6,7 @@ interface Props {
 
 const { publishDate, license } = Astro.props;
 
-const SITE_URL = 'https://evigila.net';
+const SITE_URL = 'https://blog.evigila.net';
 const postPath = Astro.url.pathname;
 const canonicalUrl = SITE_URL + postPath;
 
@@ -31,7 +31,7 @@ const publishedLabel = publishDate.toLocaleDateString('zh-CN', {
 				<path d="M21,11H6.83l3.58-3.59L9,6l-6,6,6,6,1.41-1.41L6.83,13H21Z" fill="currentColor"/>
 			</svg>
 			<span class="decl-card__label">本站网址</span>
-			<a class="decl-card__link" href={SITE_URL} target="_blank" rel="noopener noreferrer">{SITE_URL}</a>
+			<button class="decl-card__link decl-card__copy-btn" type="button" data-copy={SITE_URL}>{SITE_URL}</button>
 		</div>
 
 		<div class="decl-card__row">
@@ -39,8 +39,7 @@ const publishedLabel = publishDate.toLocaleDateString('zh-CN', {
 				<path d="M19.333,14.667a4.66,4.66,0,0,0-3.839,2.024L8.985,13.752a4.574,4.574,0,0,0,.005-3.488l6.5-2.954a4.66,4.66,0,1,0-.827-2.643,4.633,4.633,0,0,0,.08.786L7.833,8.593a4.668,4.668,0,1,0-.015,6.827l6.928,3.128a4.736,4.736,0,0,0-.079.785,4.667,4.667,0,1,0,4.666-4.666ZM19.333,2a2.667,2.667,0,1,1-2.666,2.667A2.669,2.669,0,0,1,19.333,2ZM4.667,14.667A2.667,2.667,0,1,1,7.333,12,2.67,2.67,0,0,1,4.667,14.667ZM19.333,22A2.667,2.667,0,1,1,22,19.333,2.669,2.669,0,0,1,19.333,22Z" fill="currentColor"/>
 			</svg>
 			<span class="decl-card__label">分享本文</span>
-			<a class="decl-card__link" href={canonicalUrl} target="_blank" rel="noopener noreferrer">{canonicalUrl}</a>
-            <span>（使用左侧分享按钮快速复制链接）</span>
+			<button class="decl-card__link decl-card__copy-btn" type="button" data-copy={canonicalUrl}>{canonicalUrl}</button>
 		</div>
 
 		<div class="decl-card__row">
@@ -150,4 +149,40 @@ const publishedLabel = publishDate.toLocaleDateString('zh-CN', {
 		text-underline-offset: 0.15em;
 		word-break: break-all;
 	}
+
+	.decl-card__copy-btn {
+		background: none;
+		border: none;
+		padding: 0;
+		font: inherit;
+		cursor: pointer;
+		text-align: left;
+	}
+
+	.decl-card__copy-btn:hover {
+		opacity: 0.75;
+	}
 </style>
+
+<script>
+	const _showToast = (msg: string) =>
+		(window as unknown as { showToast?: (m: string) => void }).showToast?.(msg);
+
+	document.querySelectorAll<HTMLButtonElement>('[data-copy]').forEach((btn) => {
+		btn.addEventListener('click', async () => {
+			const text = btn.dataset.copy ?? '';
+			try {
+				await navigator.clipboard.writeText(text);
+			} catch {
+				const textarea = document.createElement('textarea');
+				textarea.value = text;
+				textarea.style.cssText = 'position:fixed;opacity:0;pointer-events:none;';
+				document.body.appendChild(textarea);
+				textarea.select();
+				document.execCommand('copy');
+				document.body.removeChild(textarea);
+			}
+			_showToast('感谢分享，已复制到剪贴板喵~');
+		});
+	});
+</script>
