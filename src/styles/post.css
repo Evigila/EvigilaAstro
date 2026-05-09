@@ -266,7 +266,7 @@
 }
 
 .post-content,
-.post-comments-placeholder {
+.post-comments {
 	padding: clamp(1.8rem, 4.2vw, 3.2rem);
 }
 
@@ -343,14 +343,12 @@
 	border-top: 1px solid var(--border-0);
 }
 
-.post-comments-placeholder {
+.post-comments {
 	scroll-margin-top: 6rem;
 }
 
-.post-comments-placeholder__body {
-	margin: 1rem 0 0;
-	line-height: 1.8;
-	color: var(--text-1);
+.post-comments__widget {
+	margin-top: 1rem;
 }
 
 .post-outline {

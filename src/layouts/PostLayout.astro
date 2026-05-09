@@ -161,12 +161,28 @@ const publishedLabel = publishDate.toLocaleDateString('zh-CN', {
 					</div>
 				</article>
 
-				<section class="post-panel post-comments-placeholder" id="post-comments" aria-label="评论区占位">
+				<section class="post-panel post-comments" id="post-comments" aria-label="评论区">
 					<p class="post-panel__kicker">Comments</p>
 					<p class="post-panel__title">评论区</p>
-					<p class="post-comments-placeholder__body">
-						评论系统暂未接入，这里会预留给后续的讨论、回复与延展阅读内容。
-					</p>
+					<div class="post-comments__widget">
+						<script
+							is:inline
+							src="https://giscus.app/client.js"
+							data-repo="Evigila/EvigilaAstro"
+							data-repo-id="R_kgDOSTv6rQ"
+							data-category="Announcements"
+							data-category-id="DIC_kwDOSTv6rc4C8n35"
+							data-mapping="pathname"
+							data-strict="0"
+							data-reactions-enabled="1"
+							data-emit-metadata="0"
+							data-input-position="bottom"
+							data-theme="preferred_color_scheme"
+							data-lang="zh-CN"
+							crossorigin="anonymous"
+							async
+						></script>
+					</div>
 				</section>
 			</div>
 

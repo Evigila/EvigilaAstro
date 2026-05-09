@@ -117,6 +117,33 @@ export const initPostPage = () => {
 	initTheme(themeButton, themeLabel);
 	update();
 
+	// ── Giscus theme sync ──────────────────────────────────────────────────────
+	const syncGiscusTheme = () => {
+		const iframe = document.querySelector<HTMLIFrameElement>('iframe.giscus-frame');
+		if (!iframe?.contentWindow) return;
+		const isDark = root.dataset.theme === 'dark';
+		iframe.contentWindow.postMessage(
+			{ giscus: { setConfig: { theme: isDark ? 'dark_dimmed' : 'light' } } },
+			'https://giscus.app',
+		);
+	};
+
+	// 页面加载后 Giscus iframe 就绪时，读取已保存的站点主题并同步一次
+	window.addEventListener(
+		'message',
+		(event: MessageEvent) => {
+			if (event.origin !== 'https://giscus.app') return;
+			if (typeof event.data !== 'object' || !event.data.giscus) return;
+			syncGiscusTheme();
+		},
+		{ once: true },
+	);
+
+	themeButton?.addEventListener('click', () => {
+		// 等 initTheme 更新 dataset.theme 后再同步
+		requestAnimationFrame(syncGiscusTheme);
+	});
+
 	// ── Font size ──────────────────────────────────────────────────────────────
 	const FONT_SIZE_KEY = 'evigila-font-size';
 	const fontSizeValues = ['small', 'normal', 'large'] as const;
